@@ -1,0 +1,115 @@
+Royal Challengers Bengaluru  (20 ovs maximum)
+Batting	 	R	B	M	4s	6s	SR
+Phil Salt 
+b Boult
+4	2	1	1	0	200.00
+Virat Kohli 
+c Naman Dhir b Pandya
+67	42	62	8	2	159.52
+Devdutt Padikkal 
+c Jacks b Puthur
+37	22	37	2	3	168.18
+Rajat Patidar (c)
+c †Rickelton b Boult
+64	32	50	5	4	200.00
+Liam Livingstone 
+c Bumrah b Pandya
+0	2	2	0	0	0.00
+Jitesh Sharma †
+not out	40	19	31	2	4	210.52
+Tim David 
+not out	1	1	5	0	0	100.00
+Extras	(lb 1, w 7)	8	
+Total	
+20 Ov
+ (RR: 11.05)
+221/5	
+Did not bat
+Krunal Pandya, 
+Bhuvneshwar Kumar, 
+Josh Hazlewood, 
+Yash Dayal 
+Fall of wickets
+DRS
+1-4 (Phil Salt, 0.2 ov), 2-95 (Devdutt Padikkal, 8.6 ov), 3-143 (Virat Kohli, 14.1 ov), 4-144 (Liam Livingstone, 14.3 ov), 5-213 (Rajat Patidar, 18.6 ov)
+Bowling	O	M	R	W	ECON	0s	WD	NB
+Trent Boult
+4	0	57	
+2
+14.25	8	2	0
+Deepak Chahar
+2	0	29	0	14.50	2	1	0
+Jasprit Bumrah
+4	0	29	0	7.25	5	0	0
+Will Jacks
+1	0	10	0	10.00	2	0	0
+Mitchell Santner
+4	0	40	0	10.00	6	1	0
+Hardik Pandya
+4	0	45	
+2
+11.25	8	3	0
+Vignesh Puthur
+1	0	10	
+1
+10.00	1	0	0
+Mumbai Indians  (T: 222 runs from 20 ovs)
+Batting	 	R	B	M	4s	6s	SR
+Rohit Sharma 
+b Yash Dayal
+17	9	7	2	1	188.88
+Ryan Rickelton †
+lbw b Hazlewood
+17	10	18	4	0	170.00
+Will Jacks 
+c Kohli b Pandya
+22	18	38	2	1	122.22
+Suryakumar Yadav 
+c Livingstone b Yash Dayal
+28	26	42	5	0	107.69
+Tilak Varma 
+c Salt b Kumar
+56	29	45	4	4	193.10
+Hardik Pandya (c)
+c Livingstone b Hazlewood
+42	15	34	3	4	280.00
+Naman Dhir 
+c Yash Dayal b Pandya
+11	6	15	1	1	183.33
+Mitchell Santner 
+c David b Pandya
+8	4	5	0	1	200.00
+Deepak Chahar 
+c David b Pandya
+0	1	1	0	0	0.00
+Trent Boult 
+not out	1	1	5	0	0	100.00
+Jasprit Bumrah 
+not out	0	1	1	0	0	0.00
+Extras	(lb 1, w 6)	7	
+Total	
+20 Ov
+ (RR: 10.45)
+209/9	
+Fall of wickets
+DRS
+1-21 (Rohit Sharma, 1.4 ov), 2-38 (Ryan Rickelton, 3.4 ov), 3-79 (Will Jacks, 9.4 ov), 4-99 (Suryakumar Yadav, 11.6 ov), 5-188 (Tilak Varma, 17.4 ov), 6-194 (Hardik Pandya, 18.1 ov), 7-203 (Mitchell Santner, 19.1 ov), 8-203 (Deepak Chahar, 19.2 ov), 9-209 (Naman Dhir, 19.5 ov)
+Bowling	O	M	R	W	ECON	0s	WD	NB
+Bhuvneshwar Kumar
+4	0	48	
+1
+12.00	9	1	0
+Yash Dayal
+4	0	46	
+2
+11.50	8	0	0
+Josh Hazlewood
+4	0	37	
+2
+9.25	12	1	0
+Suyash Sharma
+4	0	32	0	8.00	11	1	0
+Krunal Pandya
+4	0	45	
+4
+11.25	8	3	0
