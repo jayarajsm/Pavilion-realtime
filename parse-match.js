@@ -15,6 +15,24 @@
 const fs = require('fs');
 const path = require('path');
 
+// ========== ANSI helpers ==========
+const c = {
+  reset: '\x1b[0m',
+  dim:   '\x1b[2m',
+  // Only used for titles/banners/badges — body text is plain
+  red:   '\x1b[31m',
+  green: '\x1b[32m',
+  blue:  '\x1b[34m',
+};
+
+function banner(text, color = c.blue) {
+  const line = '─'.repeat(text.length + 4);
+  return `\n${color}  ┌${line}┐\n  │  ${text}  │\n  └${line}┘${c.reset}\n`;
+}
+function sectionHeader(text) {
+  return `${c.blue}  ▸ ${text}${c.reset}`;
+}
+
 const PLAYERS_FILE = path.join(__dirname, 'data', 'players-cache.json');
 const MATCHES_DIR = path.join(__dirname, 'data', 'matches');
 const RAW_DIR = path.join(__dirname, 'data', 'raw');
@@ -24,8 +42,8 @@ const forceFlag = args.includes('--force');
 const filteredArgs = args.filter(a => a !== '--force');
 
 if (filteredArgs.length < 1) {
-  console.log('Usage: node parse-match.js <rawfile> [--force]');
-  console.log('Example: node parse-match.js data/raw/match-2.txt');
+  console.log(`\n  ${c.blue}Usage:${c.reset}   node parse-match.js <rawfile> [--force]`);
+  console.log(`  ${c.blue}Example:${c.reset} node parse-match.js data/raw/match-2.txt\n`);
   process.exit(1);
 }
 
@@ -33,18 +51,18 @@ const rawFile = filteredArgs[0];
 const basename = path.basename(rawFile, path.extname(rawFile));
 const matchNumMatch = basename.match(/(\d+)/);
 if (!matchNumMatch) {
-  console.error(`Could not extract match number from filename: ${basename}`);
-  console.error('Filename should contain a number, e.g., match-3.txt');
+  console.error(`\n  ${c.red}✗ Could not extract match number from: ${basename}${c.reset}`);
+  console.error(`    Filename should contain a number, e.g., match-3.txt\n`);
   process.exit(1);
 }
 const matchNum = matchNumMatch[1];
 
 if (!fs.existsSync(rawFile)) {
-  console.error(`File not found: ${rawFile}`);
+  console.error(`\n  ${c.red}✗ File not found: ${rawFile}${c.reset}\n`);
   process.exit(1);
 }
 if (!fs.existsSync(PLAYERS_FILE)) {
-  console.error('Error: data/players-cache.json not found.');
+  console.error(`\n  ${c.red}✗ data/players-cache.json not found.${c.reset}\n`);
   process.exit(1);
 }
 
@@ -568,23 +586,23 @@ function runReview() {
 const review = runReview();
 
 if (!forceFlag && review.issues.length > 0) {
-  console.log('\n========== REVIEW: ISSUES FOUND ==========\n');
-  console.log('Fix these issues in the raw file before converting:\n');
+  console.log(banner('REVIEW: ISSUES FOUND', c.red));
+  console.log(`  Fix these issues in the raw file before converting:\n`);
   for (const issue of review.issues) {
-    console.log(`  ✗ ${issue}`);
+    console.log(`  ${c.red}✗${c.reset} ${issue}`);
   }
   if (review.warnings.length > 0) {
-    console.log('\nWarnings (may be OK):\n');
+    console.log(`\n${sectionHeader('Warnings (may be OK)')}\n`);
     for (const w of review.warnings) {
-      console.log(`  ! ${w}`);
+      console.log(`    ! ${w}`);
     }
   }
-  console.log('\nRe-run after fixing, or use --force to skip review.');
+  console.log(`\n  Re-run after fixing, or use --force to skip review.\n`);
   process.exit(1);
 }
 
 if (review.warnings.length > 0) {
-  console.log('\n========== REVIEW: WARNINGS ==========\n');
+  console.log(banner('REVIEW: WARNINGS', c.blue));
   for (const w of review.warnings) {
     console.log(`  ! ${w}`);
   }
@@ -592,14 +610,15 @@ if (review.warnings.length > 0) {
 }
 
 if (review.issues.length === 0 && review.warnings.length === 0) {
-  console.log('\n✓ Review passed — no issues found.\n');
+  console.log(`\n  ${c.green}✓ Review passed — no issues found.${c.reset}\n`);
 }
 
 // ========== Man of the Match selection ==========
-const readline = require('readline');
 
 async function selectMoM() {
-  // Build list of matched playing players
+  const inquirer = (await import('inquirer')).default;
+
+  // Build list of matched playing players, grouped by team
   const momCandidates = [];
   for (const [id, stats] of Object.entries(matchedPlayers)) {
     if (!stats.playing) continue;
@@ -607,35 +626,64 @@ async function selectMoM() {
     if (p) momCandidates.push({ id, player: p, stats });
   }
 
-  // Also include unmatched playing names as context
-  const allNames = momCandidates.map((c, idx) => {
-    const b = c.stats.batting, w = c.stats.bowling;
-    const summary = [];
-    if (b.runs) summary.push(`${b.runs}r`);
-    if (w.wickets) summary.push(`${w.wickets}w`);
-    return `  ${idx + 1}. ${c.player.name} (${c.player.iplTeam})${summary.length ? ' — ' + summary.join(', ') : ''}`;
+  // Sort by team, then by runs descending
+  momCandidates.sort((a, b) => {
+    if (a.player.iplTeam !== b.player.iplTeam) return a.player.iplTeam.localeCompare(b.player.iplTeam);
+    return b.stats.batting.runs - a.stats.batting.runs;
   });
 
-  console.log('\n========== Select Man of the Match ==========\n');
-  console.log(allNames.join('\n'));
-  console.log(`  0. None / Skip`);
-
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-
-  return new Promise((resolve) => {
-    rl.question('\nEnter number: ', (answer) => {
-      rl.close();
-      const num = parseInt(answer);
-      if (num > 0 && num <= momCandidates.length) {
-        const selected = momCandidates[num - 1];
-        selected.stats.mom = true;
-        console.log(`\n✓ Man of the Match: ${selected.player.name}\n`);
-      } else {
-        console.log('\n✓ No Man of the Match selected.\n');
-      }
-      resolve();
+  // Build inquirer choices with separators per team
+  const choices = [];
+  let lastTeam = '';
+  for (const cand of momCandidates) {
+    if (cand.player.iplTeam !== lastTeam) {
+      lastTeam = cand.player.iplTeam;
+      choices.push(new inquirer.Separator(`${c.dim}  ── ${lastTeam} ${'─'.repeat(30)}${c.reset}`));
+    }
+    const b = cand.stats.batting, w = cand.stats.bowling, f = cand.stats.fielding;
+    const parts = [];
+    if (b.runs) parts.push(`${b.runs}r`);
+    if (w.wickets) parts.push(`${w.wickets}w`);
+    if (f.catches) parts.push(`${f.catches}ct`);
+    if (f.runoutDirect) parts.push(`${f.runoutDirect}ro`);
+    if (f.stumpings) parts.push(`${f.stumpings}st`);
+    const statStr = parts.length ? `  ${c.dim}─ ${parts.join(', ')}${c.reset}` : '';
+    choices.push({
+      name: `${cand.player.name}${statStr}`,
+      value: cand.id,
+      short: cand.player.name,
     });
+  }
+
+  choices.push(new inquirer.Separator(`${c.dim}  ${'─'.repeat(40)}${c.reset}`));
+  choices.push({
+    name: `${c.dim}None / Skip${c.reset}`,
+    value: null,
+    short: 'None',
   });
+
+  console.log(banner('Man of the Match', c.blue));
+
+  const { mom } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'mom',
+      message: 'Select the Man of the Match',
+      choices,
+      pageSize: 20,
+      loop: false,
+    },
+  ]);
+
+  if (mom) {
+    const selected = momCandidates.find(ca => ca.id === mom);
+    if (selected) {
+      selected.stats.mom = true;
+      console.log(`\n  ${c.green}★ Man of the Match: ${selected.player.name}${c.reset}\n`);
+    }
+  } else {
+    console.log(`\n  No Man of the Match selected.\n`);
+  }
 }
 
 // ========== Determine IPL teams from scorecard headers ==========
@@ -710,37 +758,41 @@ if (!fs.existsSync(MATCHES_DIR)) fs.mkdirSync(MATCHES_DIR, { recursive: true });
 const outFile = path.join(MATCHES_DIR, `match-${matchNum}.csv`);
 
 if (fs.existsSync(outFile)) {
-  console.error(`File exists: ${outFile} — delete it first or use a different number.`);
+  console.error(`\n  ${c.red}✗ File exists: ${outFile} — delete it first or use a different number.${c.reset}\n`);
   process.exit(1);
 }
 
 fs.writeFileSync(outFile, csv);
 
 // ========== Summary ==========
-console.log(`\nCreated: ${outFile}\n`);
-console.log(`Match: ${title}`);
-console.log(`Fantasy players matched: ${Object.keys(matchedPlayers).length}`);
-console.log(`Playing: ${Object.values(matchedPlayers).filter(s => s.playing).length}`);
+console.log(banner(`${title}`, c.green));
+
+console.log(`  ${c.green}✓${c.reset} Created: ${outFile}`);
+console.log(`    Fantasy players matched: ${Object.keys(matchedPlayers).length}  |  Playing: ${Object.values(matchedPlayers).filter(s => s.playing).length}\n`);
 
 if (unmatched.length > 0) {
-  console.log(`\nNot in fantasy roster (OK if not auctioned):`);
+  console.log(`${sectionHeader('Not in fantasy roster (OK if not auctioned)')}`);
   for (const name of unmatched) {
-    console.log(`  - ${name}`);
+    console.log(`    • ${name}`);
   }
+  console.log('');
 }
 
-console.log(`\nMatched players:`);
+console.log(`${sectionHeader('Matched players')}\n`);
 for (const [id, stats] of Object.entries(matchedPlayers)) {
   const p = allPlayers.find(pl => pl.id === parseInt(id));
   const b = stats.batting, w = stats.bowling, f = stats.fielding;
-  const summary = [];
-  if (b.runs) summary.push(`${b.runs}r`);
-  if (w.wickets) summary.push(`${w.wickets}w`);
-  if (f.catches) summary.push(`${f.catches}ct`);
-  if (f.runoutDirect) summary.push(`${f.runoutDirect}ro`);
-  if (f.stumpings) summary.push(`${f.stumpings}st`);
-  console.log(`  ${p ? p.name : 'ID:'+id} (${p ? p.fantasyTeam : '?'}) — ${summary.join(', ') || 'playing only'}`);
+  const parts = [];
+  if (b.runs) parts.push(`${b.runs}r`);
+  if (w.wickets) parts.push(`${w.wickets}w`);
+  if (f.catches) parts.push(`${f.catches}ct`);
+  if (f.runoutDirect) parts.push(`${f.runoutDirect}ro`);
+  if (f.stumpings) parts.push(`${f.stumpings}st`);
+  const momTag = stats.mom ? ` ${c.green}★ MoM${c.reset}` : '';
+  const nameStr = p ? p.name : `ID:${id}`;
+  const teamStr = p ? p.fantasyTeam : '?';
+  console.log(`    ${nameStr} ${c.dim}(${teamStr})${c.reset}${momTag} ${c.dim}─${c.reset} ${parts.join(', ') || `${c.dim}playing only${c.reset}`}`);
 }
 
-console.log(`\nReview the CSV, then refresh the site.`);
+console.log(`\n  Review the CSV, then refresh the site.\n`);
 })();

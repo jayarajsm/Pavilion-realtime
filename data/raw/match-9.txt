@@ -1,0 +1,112 @@
+Chennai Super Kings  (20 ovs maximum)
+Batting	 	R	B	M	4s	6s	SR
+Ayush Mhatre 
+c Maphaka b Deshpande
+43	20	29	8	1	215.00
+Devon Conway 
+c Parag b Yudhvir Singh
+10	8	7	2	0	125.00
+Urvil Patel 
+c Maphaka b Yudhvir Singh
+0	2	2	0	0	0.00
+Ravichandran Ashwin 
+c Hetmyer b Hasaranga
+13	8	22	1	1	162.50
+Ravindra Jadeja 
+c Jurel b Yudhvir Singh
+1	5	9	0	0	20.00
+Dewald Brevis 
+b Madhwal
+42	25	36	2	3	168.00
+Shivam Dube 
+c Jaiswal b Madhwal
+39	32	55	2	2	121.87
+MS Dhoni (c)†
+c Deshpande b Madhwal
+16	17	28	0	1	94.11
+Anshul Kamboj 
+not out	5	3	4	1	0	166.66
+Noor Ahmad 
+not out	2	1	1	0	0	200.00
+Extras	(lb 3, nb 1, w 12)	16	
+Total	
+20 Ov
+ (RR: 9.35)
+187/8	
+Did not bat
+Khaleel Ahmed 
+Fall of wickets
+DRS
+1-12 (Devon Conway, 1.4 ov), 2-12 (Urvil Patel, 1.6 ov), 3-68 (Ayush Mhatre, 5.5 ov), 4-70 (Ravichandran Ashwin, 6.3 ov), 5-78 (Ravindra Jadeja, 7.4 ov), 6-137 (Dewald Brevis, 13.4 ov), 7-180 (Shivam Dube, 19.1 ov), 8-185 (MS Dhoni, 19.5 ov)
+Bowling	O	M	R	W	ECON	0s	WD	NB
+Tushar Deshpande
+4	0	33	
+1
+8.25	10	0	0
+Yudhvir Singh
+4	0	47	
+3
+11.75	9	0	1
+Kwena Maphaka
+2	0	22	0	11.00	4	2	0
+Wanindu Hasaranga
+4	0	27	
+1
+6.75	10	2	0
+Riyan Parag
+2	0	26	0	13.00	3	3	0
+Akash Madhwal
+4	0	29	
+3
+7.25	8	1	0
+Rajasthan Royals  (T: 188 runs from 20 ovs)
+Batting	 	R	B	M	4s	6s	SR
+Yashasvi Jaiswal 
+b Kamboj
+36	19	17	5	2	189.47
+Vaibhav Sooryavanshi 
+c Jadeja b Ashwin
+57	33	64	4	4	172.72
+Sanju Samson (c)†
+c Brevis b Ashwin
+41	31	42	3	2	132.25
+Riyan Parag 
+b Noor Ahmad
+3	4	9	0	0	75.00
+Dhruv Jurel 
+not out	31	12	14	2	3	258.33
+Shimron Hetmyer 
+not out	12	5	7	1	1	240.00
+Extras	(nb 1, w 7)	8	
+Total	
+17.1 Ov
+ (RR: 10.95)
+188/4	
+Did not bat
+Wanindu Hasaranga, 
+Kwena Maphaka, 
+Yudhvir Singh, 
+Tushar Deshpande, 
+Akash Madhwal 
+Fall of wickets
+DRS
+1-37 (Yashasvi Jaiswal, 3.4 ov), 2-135 (Sanju Samson, 13.2 ov), 3-138 (Vaibhav Sooryavanshi, 13.6 ov), 4-158 (Riyan Parag, 15.4 ov)
+Bowling	O	M	R	W	ECON	0s	WD	NB
+Khaleel Ahmed
+3	0	35	0	11.66	6	0	0
+Anshul Kamboj
+3	0	21	
+1
+7.00	8	0	0
+Ravichandran Ashwin
+4	0	41	
+2
+10.25	6	0	0
+Noor Ahmad
+3	0	42	
+1
+14.00	4	2	1
+Matheesha Pathirana
+2.1	0	22	0	10.15	3	1	0
+Ravindra Jadeja
+2	0	27	0	13.50	3	0	0
