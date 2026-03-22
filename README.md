@@ -1,14 +1,14 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/IPL_2026-Fantasy_League-6366f1?style=for-the-badge&labelColor=1c1c24" />
+  <img src="https://img.shields.io/badge/Pavilion-Fantasy_Cricket-6366f1?style=for-the-badge&labelColor=1c1c24" />
   <img src="https://img.shields.io/badge/Node.js-v18+-10b981?style=for-the-badge&logo=nodedotjs&logoColor=white&labelColor=1c1c24" />
   <img src="https://img.shields.io/badge/Deployed_on-Netlify-06b6d4?style=for-the-badge&logo=netlify&logoColor=white&labelColor=1c1c24" />
 </p>
 
-<h1 align="center">🎖️ IPL 2026 Fantasy League</h1>
+<h1 align="center">🏏 Pavilion</h1>
 
 <p align="center">
-  A fantasy cricket points tracker for our friend group's IPL 2026 league.<br/>
-  8 teams, 200+ players, real-time scoring based on Cricbuzz scorecards.
+  A self-hosted fantasy cricket league tracker.<br/>
+  Fork it, deploy it, upload your player roster — your league, your instance.
 </p>
 
 ---
@@ -30,8 +30,8 @@
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/iambalabharathi/cricket-fantasy-site.git
-cd cricket-fantasy-site
+git clone https://github.com/iambalabharathi/Pavilion.git
+cd Pavilion
 
 # 2. Install dependencies
 npm install
@@ -237,7 +237,7 @@ Each match is a CSV file at `data/matches/match-<N>.csv`.
 ## 📁 Project Structure
 
 ```
-cricket-fantasy-site/
+Pavilion/
 ├── public/
 │   └── index.html          # Single-page app (all frontend code)
 ├── data/
@@ -289,5 +289,5 @@ Just push your changes and the live site updates automatically.
 ---
 
 <p align="center">
-  <sub>Built with ❤️ for IPL 2026</sub>
+  <sub>Built with ❤️ — Pavilion</sub>
 </p>

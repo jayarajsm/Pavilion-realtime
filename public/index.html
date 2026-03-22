@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IPL 2026 Fantasy League</title>
+  <title>Pavilion</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎖️</text></svg>">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
@@ -466,7 +466,7 @@
   <div class="header" id="main-header" style="display:none">
     <div class="header-inner">
       <div class="logo">
-        <h1 id="header-title">IPL <span>2026</span> Fantasy League</h1>
+        <h1 id="header-title"><span>Pavilion</span></h1>
       </div>
       <nav>
         <button class="active" onclick="switchView('dashboard', this)">📊 Dashboard</button>
@@ -500,7 +500,7 @@
 
   <footer class="site-footer">
     <div class="footer-illu">🏏🏟️⚡🧤🏆</div>
-    <div class="footer-text">IPL 2026 Fantasy League</div>
+    <div class="footer-text">Pavilion</div>
   </footer>
 
   <div class="modal-overlay" id="match-modal" onclick="if(event.target===this)closeModal()">
@@ -553,7 +553,7 @@
     function renderSetupPage() {
       document.getElementById('setup-view').innerHTML = `
         <div class="setup-hero fade-up">
-          <h1>🎖️ Fantasy Cricket League</h1>
+          <h1>🏏 Pavilion</h1>
           <p>Set up your league to get started</p>
         </div>
         <div class="setup-card fade-up">
@@ -716,7 +716,7 @@
       const topPlayer = dash.topPlayers.length > 0 ? dash.topPlayers[0] : null;
       const restPlayers = dash.topPlayers.slice(1);
       const topRestPts = restPlayers.length > 0 ? restPlayers[0].total : 1;
-      const heroTitle = leagueConfig ? leagueConfig.name : 'IPL 2026 Fantasy League';
+      const heroTitle = leagueConfig ? leagueConfig.name : 'Pavilion';
 
       view.innerHTML = `
         <div class="dash-hero fade-up">
