@@ -1,0 +1,12 @@
+{
+  "name": "cricket-fantasy-site",
+  "version": "1.0.0",
+  "description": "IPL 2026 Fantasy Points Tracker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

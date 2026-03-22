@@ -1,0 +1,110 @@
+Punjab Kings  (20 ovs maximum)
+Batting	 	R	B	M	4s	6s	SR
+Priyansh Arya 
+c Pandya b Yash Dayal
+7	5	6	1	0	140.00
+Prabhsimran Singh 
+c †Sharma b Kumar
+18	10	14	2	1	180.00
+Josh Inglis †
+c Kumar b Hazlewood
+4	7	20	0	0	57.14
+Shreyas Iyer (c)
+c †Sharma b Hazlewood
+2	3	3	0	0	66.66
+Nehal Wadhera 
+b Yash Dayal
+8	10	15	1	0	80.00
+Marcus Stoinis 
+b Suyash Sharma
+26	17	29	2	2	152.94
+Shashank Singh 
+b Suyash Sharma
+3	5	9	0	0	60.00
+Musheer Khan 
+lbw b Suyash Sharma
+0	3	3	0	0	0.00
+Azmatullah Omarzai 
+c †Sharma b Hazlewood
+18	12	26	1	1	150.00
+Harpreet Brar 
+b Shepherd
+4	11	13	0	0	36.36
+Kyle Jamieson 
+not out	0	3	3	0	0	0.00
+Extras	(lb 5, nb 1, w 5)	11	
+Total	
+14.1 Ov
+ (RR: 7.12)
+101	
+Did not bat
+Arshdeep Singh 
+Fall of wickets
+DRS
+1-9 (Priyansh Arya, 1.2 ov), 2-27 (Prabhsimran Singh, 2.6 ov), 3-30 (Shreyas Iyer, 3.4 ov), 4-38 (Josh Inglis, 5.1 ov), 5-50 (Nehal Wadhera, 6.3 ov), 6-60 (Shashank Singh, 8.2 ov), 7-60 (Musheer Khan, 8.5 ov), 8-78 (Marcus Stoinis, 10.3 ov), 9-97 (Harpreet Brar, 13.3 ov), 10-101 (Azmatullah Omarzai, 14.1 ov)
+Bowling	O	M	R	W	ECON	0s	WD	NB
+Bhuvneshwar Kumar
+2	0	17	
+1
+8.50	5	0	0
+Yash Dayal
+4	0	26	
+2
+6.50	11	0	1
+Josh Hazlewood
+3.1	0	21	
+3
+6.63	10	0	0
+Suyash Sharma
+3	0	17	
+3
+5.66	11	1	0
+Krunal Pandya
+1	0	10	0	10.00	2	0	0
+Romario Shepherd
+1	0	5	
+1
+5.00	4	0	0
+Royal Challengers Bengaluru  (T: 102 runs from 20 ovs)
+Batting	 	R	B	M	4s	6s	SR
+Phil Salt 
+not out	56	27	48	6	3	207.40
+Virat Kohli 
+c †Inglis b Jamieson
+12	12	16	2	0	100.00
+Mayank Agarwal 
+c Iyer b Musheer Khan
+19	13	24	2	1	146.15
+Rajat Patidar (c)
+not out	15	8	6	1	1	187.50
+Extras	(lb 4)	4	
+Total	
+10 Ov
+ (RR: 10.60)
+106/2	
+Did not bat
+Liam Livingstone, 
+Jitesh Sharma †, 
+Romario Shepherd, 
+Krunal Pandya, 
+Bhuvneshwar Kumar, 
+Yash Dayal, 
+Josh Hazlewood 
+Fall of wickets
+DRS
+1-30 (Virat Kohli, 3.2 ov), 2-84 (Mayank Agarwal, 7.5 ov)
+Bowling	O	M	R	W	ECON	0s	WD	NB
+Arshdeep Singh
+2	0	20	0	10.00	3	0	0
+Kyle Jamieson
+3	1	27	
+1
+9.00	9	0	0
+Azmatullah Omarzai
+1	0	10	0	10.00	3	0	0
+Harpreet Brar
+2	0	18	0	9.00	2	0	0
+Musheer Khan
+2	0	27	
+1
+13.50	1	0	0
