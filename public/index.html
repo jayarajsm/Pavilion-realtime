@@ -477,6 +477,24 @@
       nav button { padding: 6px 0; font-size: 11px; }
     }
 
+    /* Standings tab */
+    .st-team-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+    .st-team-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; cursor: pointer; transition: background .15s; }
+    .st-team-header:hover { background: var(--card-hover-bg); }
+    .st-team-name { font-size: 16px; font-weight: 700; color: var(--fg); flex: 1; }
+    .st-team-pts { font-size: 18px; font-weight: 800; color: var(--accent-light); margin-right: 12px; }
+    .st-team-pts-label { font-size: 11px; color: var(--muted); }
+    .st-chevron { font-size: 20px; color: var(--muted); transition: transform .2s; font-weight: 700; }
+    .st-team-card.open .st-chevron { transform: rotate(90deg); }
+    .st-team-body { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .st-team-card.open .st-team-body { max-height: 5000px; }
+    .st-search { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--surface-border); background: var(--surface); color: var(--fg); font-size: 14px; margin-bottom: 16px; outline: none; }
+    .st-search:focus { border-color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .st-team-header { padding: 12px 14px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
@@ -492,6 +510,7 @@
       <nav>
         <button class="active" onclick="switchView('dashboard', this)">📊 Dashboard</button>
         <button onclick="switchView('explore', this)">🏏 Matches</button>
+        <button onclick="switchView('standings', this)">🏅 Teams</button>
         <button onclick="switchView('rules', this)">📋 Rules</button>
       </nav>
       <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
@@ -504,6 +523,7 @@
   <div class="container">
     <div id="dashboard-view" class="view active"></div>
     <div id="explore-view" class="view"></div>
+    <div id="standings-view" class="view"></div>
     <div id="entry-view" class="view"></div>
     <div id="rules-view" class="view"></div>
   </div>
@@ -548,6 +568,7 @@
       if (btn) btn.classList.add('active');
       if (view === 'dashboard') loadDashboard();
       if (view === 'explore') loadExploreView();
+      if (view === 'standings') loadStandings();
       if (view === 'entry') loadMatchForm();
       if (view === 'rules') renderRules();
     }
@@ -636,6 +657,99 @@
         `;
     }
 
+
+    // ========== STANDINGS — Teams & Players ==========
+    async function loadStandings() {
+      const view = document.getElementById('standings-view');
+      const [standRes, detailsRes] = await Promise.all([
+        fetch('/api/standings'), fetch('/api/players/details')
+      ]);
+      const standings = await standRes.json();
+      const detailedPlayers = await detailsRes.json();
+
+      // Build a lookup for category breakdowns by player id
+      const detailMap = {};
+      for (const p of detailedPlayers) {
+        let totalBat = 0, totalBowl = 0, totalField = 0, totalMom = 0;
+        for (const m of p.matches) {
+          totalBat += m.batting; totalBowl += m.bowling; totalField += m.fielding; totalMom += m.mom;
+        }
+        detailMap[p.id] = { bat: totalBat, bowl: totalBowl, field: totalField, mom: totalMom };
+      }
+
+      if (standings.length === 0) {
+        view.innerHTML = '<div class="empty-state"><h3>🏟️ No data yet</h3></div>';
+        return;
+      }
+
+      let html = `
+        <div class="section-title fade-up">🏅 Teams & Players <span class="section-deco"><span class="d1"></span><span class="d2"></span><span class="d3"></span></span></div>
+        <input type="text" class="st-search fade-up" id="st-search" placeholder="🔍 Search teams or players..." oninput="filterStandings()" />`;
+
+      for (const t of standings) {
+        const playerCards = t.players.filter(p => p.points > 0).map(p => {
+          const d = detailMap[p.id] || { bat:0, bowl:0, field:0, mom:0 };
+          const cats = [];
+          if (d.bat) cats.push(`<span class="pr-cat pr-cat-batting">🏏 ${d.bat}</span>`);
+          if (d.bowl) cats.push(`<span class="pr-cat pr-cat-bowling">☄️ ${d.bowl}</span>`);
+          if (d.field) cats.push(`<span class="pr-cat pr-cat-fielding">🧤 ${d.field}</span>`);
+          if (d.mom) cats.push(`<span class="pr-cat pr-cat-mom">🎖️ ${d.mom}</span>`);
+          return `<div class="mf-player" data-pname="${p.name.toLowerCase()}">
+            <div class="mf-p-top">
+              <div class="mf-p-info">
+                <div class="mf-p-name">${p.name}${p.foreign==='Overseas'?' ✈️':''}</div>
+                <div class="mf-p-team">${p.iplTeam} · ${p.matchCount}m</div>
+              </div>
+              <div class="mf-p-total">${p.points}</div>
+            </div>
+            <div class="mf-p-cats">${cats.join('')}</div>
+          </div>`;
+        }).join('');
+
+        const zeroPlayers = t.players.filter(p => p.points === 0);
+        const zeroSection = zeroPlayers.length > 0 ? `
+          <div style="padding:0 16px 12px">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px">${zeroPlayers.length} player${zeroPlayers.length!==1?'s':''} with 0 points</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.8">${zeroPlayers.map(p => p.name).join(', ')}</div>
+          </div>` : '';
+
+        html += `
+          <div class="st-team-card fade-up" data-team="${t.team.toLowerCase()}" data-players="${t.players.map(p=>p.name.toLowerCase()).join(' ')}">
+            <div class="st-team-header" onclick="this.closest('.st-team-card').classList.toggle('open')">
+              <div class="st-team-name">${t.team}</div>
+              <div style="text-align:right;margin-right:12px">
+                <div class="st-team-pts">${t.total}</div>
+                <div class="st-team-pts-label">${t.players.length} players</div>
+              </div>
+              <span class="st-chevron">›</span>
+            </div>
+            <div class="st-team-body">
+              <div class="mf-players">${playerCards}</div>
+              ${zeroSection}
+            </div>
+          </div>`;
+      }
+
+      view.innerHTML = html;
+    }
+
+    function filterStandings() {
+      const q = document.getElementById('st-search').value.toLowerCase();
+      document.querySelectorAll('.st-team-card').forEach(card => {
+        const teamMatch = card.dataset.team.includes(q);
+        const playerMatch = card.dataset.players.includes(q);
+        card.style.display = (teamMatch || playerMatch) ? '' : 'none';
+        if (q && playerMatch && !teamMatch) {
+          card.classList.add('open');
+          card.querySelectorAll('.mf-player').forEach(p => {
+            p.style.display = p.dataset.pname.includes(q) ? '' : 'none';
+          });
+        } else {
+          if (q === '') card.classList.remove('open');
+          card.querySelectorAll('.mf-player').forEach(p => p.style.display = '');
+        }
+      });
+    }
 
     // ========== EXPLORE — Match Feed ==========
     const AVA_MAP = {'Batter':'av-bat','Bowler':'av-bowl','All-rounder':'av-ar','All\u2011rounder':'av-ar','Wicketkeeper':'av-wk','WK':'av-wk'};
