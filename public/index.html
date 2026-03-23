@@ -179,6 +179,8 @@
     .lb-row:nth-child(2) .lb-bar-fill { background: linear-gradient(90deg, #94a3b8, #cbd5e1); }
     .lb-row:nth-child(3) .lb-bar-fill { background: linear-gradient(90deg, #f97316, #fb923c); }
     .lb-row:nth-child(n+4) .lb-bar-fill { background: linear-gradient(90deg, var(--accent), var(--accent-light)); }
+    .lb-rank.moved-up { outline: 1px solid rgba(16,185,129,0.35); outline-offset: 2px; }
+    .lb-rank.moved-down { outline: 1px solid rgba(244,63,94,0.3); outline-offset: 2px; }
     .lb-pts { font-size: 18px; font-weight: 700; color: var(--fg); min-width: 50px; text-align: right; flex-shrink: 0; }
     .lb-row:nth-child(1) .lb-pts { color: #f59e0b; }
     .lb-row:nth-child(2) .lb-pts { color: var(--muted); }
@@ -317,13 +319,13 @@
     .empty-state h3 { font-size: 18px; color: var(--fg); margin-bottom: 8px; }
 
     /* Hero banner */
-    .dash-hero { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 20px; padding: 28px 28px; margin-bottom: 28px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .dash-hero { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; padding: 14px 20px; margin-bottom: 28px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .dash-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 30%, rgba(99,102,241,0.08), transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(236,72,153,0.06), transparent 50%); pointer-events: none; }
     .dash-hero-text { position: relative; z-index: 1; }
     .dash-hero-title { font-size: 24px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
     .dash-hero-sub { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
     .dash-stat { white-space: nowrap; }
-    .dash-hero-illu { font-size: 64px; line-height: 1; position: relative; z-index: 1; opacity: 0.9; }
+    .dash-hero-illu { font-size: 36px; line-height: 1; position: relative; z-index: 1; opacity: 0.9; }
 
     /* Section decorative dots */
     .section-deco { display: inline-flex; gap: 4px; margin-left: 8px; vertical-align: middle; }
@@ -341,7 +343,7 @@
     .st-team-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
     .st-team-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; cursor: pointer; transition: background .15s; }
     .st-team-header:hover { background: var(--card-hover-bg); }
-    .st-team-name { font-size: 16px; font-weight: 700; color: var(--fg); flex: 1; }
+    .st-team-name { font-size: 16px; font-weight: 700; color: var(--fg); }
     .st-team-pts { font-size: 18px; font-weight: 800; color: var(--accent-light); margin-right: 12px; }
     .st-team-pts-label { font-size: 11px; color: var(--muted); }
     .st-chevron { font-size: 20px; color: var(--muted); transition: transform .2s; font-weight: 700; }
@@ -379,9 +381,8 @@
       .lb-bar-wrap { height: 20px; }
       .lb-pts { font-size: 15px; min-width: 40px; }
 
-      .dash-hero { padding: 20px; }
-      .dash-hero-title { font-size: 18px; }
-      .dash-hero-illu { font-size: 42px; }
+      .dash-hero { padding: 12px 16px; }
+      .dash-hero-illu { font-size: 28px; }
 
       .tp-layout { grid-template-columns: 1fr; }
       .tp-hero { padding: 24px 20px; }
@@ -568,6 +569,30 @@
         const top = scored.length > 0 ? scored[0] : null;
         teamInfo[s.team] = { topScorer: top, activeCount: scored.length, totalPlayers: s.players.length };
       }
+
+      // Compute rank changes: current rank vs rank before last match
+      const lastMatchId = dashStandings.length > 0 ? (() => {
+        const allMatchIds = new Set();
+        for (const s of dashStandings) for (const p of s.players) for (const m of (p.matchDetails||[])) allMatchIds.add(m.matchId);
+        return [...allMatchIds].sort((a,b) => parseInt(b) - parseInt(a))[0];
+      })() : null;
+
+      const rankChangeMap = {};
+      if (lastMatchId) {
+        const prevTotals = dashStandings.map(s => {
+          let lastMatchPts = 0;
+          for (const p of s.players) {
+            const md = (p.matchDetails||[]).find(m => m.matchId === lastMatchId);
+            if (md) lastMatchPts += md.points;
+          }
+          return { team: s.team, prevTotal: s.total - lastMatchPts };
+        }).sort((a,b) => b.prevTotal - a.prevTotal);
+        const prevRankMap = {};
+        prevTotals.forEach((t, i) => prevRankMap[t.team] = i + 1);
+        for (const s of dashStandings) {
+          rankChangeMap[s.team] = prevRankMap[s.team] - s.rank; // positive = moved up
+        }
+      }
       const view = document.getElementById('dashboard-view');
 
       if (allPlayers.length === 0) {
@@ -583,10 +608,9 @@
       view.innerHTML = `
         <div class="dash-hero fade-up">
           <div class="dash-hero-text">
-            <div class="dash-hero-title">${heroTitle}</div>
             <div class="dash-hero-sub"><span class="dash-stat">🎯 ${dash.totalMatches} matches</span><span class="dash-stat">👥 ${dash.totalPlayers} players</span><span class="dash-stat">⚔️ ${dash.teamRankings.length} teams</span></div>
           </div>
-          <div class="dash-hero-illu">🏆🏏</div>
+          <div class="dash-hero-illu">🏆</div>
         </div>
         <div class="section-title fade-up">🏆 Team Rankings <span class="section-deco"><span class="d1"></span><span class="d2"></span><span class="d3"></span></span></div>
         <div class="leaderboard fade-up" style="margin-bottom:36px">
@@ -597,7 +621,11 @@
             const tc = getTeamColor(t.team);
             return `
             <div class="lb-row" style="border-left: 3px solid ${tc}">
-              <div class="lb-rank ${rankCls}">${rankEmoji}</div>
+              ${(() => {
+                const ch = rankChangeMap[t.team] || 0;
+                const moveCls = ch > 0 ? ' moved-up' : ch < 0 ? ' moved-down' : '';
+                return `<div class="lb-rank ${rankCls}${moveCls}">${rankEmoji}</div>`;
+              })()}
               <div class="lb-name">${t.team}</div>
               <div class="lb-bar-wrap"><div class="lb-bar-fill" style="width:${(t.total/maxPtsVal)*100}%;background:linear-gradient(90deg, ${tc}, ${tc}99)"></div></div>
               <div class="lb-wins">${winCountMap[t.team] ? `🔥 <span class="win-count" style="color:${tc}">${winCountMap[t.team]}</span>` : ''}</div>
@@ -693,13 +721,23 @@
           </div>` : '';
 
         const tc = getTeamColor(t.team);
+        const iplCount = {};
+        for (const p of t.players) {
+          iplCount[p.iplTeam] = (iplCount[p.iplTeam] || 0) + 1;
+        }
+        const iplSorted = Object.entries(iplCount).sort((a,b) => b[1] - a[1]);
+        const top2 = iplSorted.slice(0, 2);
+        const heaviest = top2.map(([ipl, c]) => `${ipl} (${c})`).join(', ');
+
         html += `
           <div class="st-team-card fade-up" data-team="${t.team.toLowerCase()}" data-players="${t.players.map(p=>p.name.toLowerCase()).join(' ')}" style="border-left: 3px solid ${tc}">
             <div class="st-team-header" onclick="this.closest('.st-team-card').classList.toggle('open')">
-              <div class="st-team-name" style="color:${tc}">${t.team}</div>
+              <div style="flex:1">
+                <div class="st-team-name" style="color:${tc}">${t.team}</div>
+                <div class="st-team-pts-label">Heaviest in ${heaviest}</div>
+              </div>
               <div style="text-align:right;margin-right:12px">
                 <div class="st-team-pts" style="color:${tc}">${t.total}</div>
-                <div class="st-team-pts-label">${t.players.length} players</div>
               </div>
               <span class="st-chevron">›</span>
             </div>
