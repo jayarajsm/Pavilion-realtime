@@ -99,7 +99,8 @@
     .logo h1 { font-size: 18px; color: var(--fg); font-weight: 700; }
     .logo h1 span { background: linear-gradient(135deg, var(--accent), var(--pink), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: gradientShift 5s ease infinite; }
     nav { display: flex; gap: 2px; background: var(--surface); border: 1px solid var(--surface-border); border-radius: 12px; padding: 4px; order: 3; width: 100%; margin-top: 10px; }
-    nav button { padding: 8px 16px; border: none; border-radius: 9px; cursor: pointer; font-size: 13px; font-weight: 600; background: transparent; color: var(--muted); transition: all 0.3s ease; font-family: inherit; flex: none; width: 25%; text-align: center; min-width: 0; }
+    nav button { padding: 8px 16px; border: none; border-radius: 9px; cursor: pointer; font-size: 13px; font-weight: 600; background: transparent; color: var(--muted); transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); font-family: inherit; flex: none; width: 25%; text-align: center; min-width: 0; transform: scale(1); }
+    nav button.active { transform: scale(1.03); }
     nav button[data-tab="dashboard"].active { background: rgba(99,102,241,0.15); color: #6366f1; }
     nav button[data-tab="explore"].active { background: rgba(16,185,129,0.15); color: #10b981; }
     nav button[data-tab="standings"].active { background: rgba(251,146,60,0.15); color: #fb923c; }
@@ -145,8 +146,24 @@
     .mf-p-total { font-size: 16px; font-weight: 700; color: var(--accent-light); flex-shrink: 0; }
     .mf-p-cats { display: flex; gap: 4px; flex-wrap: wrap; }
     .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
-    .view { display: none; }
-    .view.active { display: block; }
+    .view { display: none; opacity: 0; transform: translateY(12px); }
+    .view.active { display: block; animation: viewIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes viewIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Points Trend Chart */
+    .trend-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 20px; padding: 20px 20px 16px; margin-bottom: 36px; }
+    .trend-svg { width: 100%; overflow: visible; }
+    .trend-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .trend-dot { stroke-width: 2; transition: r 0.2s ease; cursor: pointer; }
+    .trend-dot:hover { r: 6; }
+    .trend-grid-line { stroke: var(--surface-border); stroke-width: 1; }
+    .trend-axis-label { font-size: 10px; fill: var(--muted); font-family: 'Outfit', sans-serif; }
+    .trend-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; justify-content: center; }
+    .trend-legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); font-weight: 600; cursor: pointer; transition: opacity 0.3s; }
+    .trend-legend-item.dimmed { opacity: 0.3; }
+    .trend-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .trend-tooltip { position: absolute; background: var(--surface); border: 1px solid var(--surface-border); border-radius: 10px; padding: 8px 12px; font-size: 12px; pointer-events: none; z-index: 50; box-shadow: 0 4px 16px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.2s; }
+    .trend-tooltip.visible { opacity: 1; }
 
     /* Section Titles */
     .section-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--fg); }
@@ -534,9 +551,18 @@
 
     const viewLoaded = {};
     function switchView(view, btn) {
-      document.querySelectorAll('#app-container .view').forEach(v => v.classList.remove('active'));
+      const currentActive = document.querySelector('#app-container .view.active');
+      const nextView = document.getElementById(view + '-view');
+      if (currentActive && currentActive !== nextView) {
+        currentActive.classList.remove('active');
+      } else if (currentActive === nextView) {
+        // Already active, skip
+      }
       document.querySelectorAll('nav button').forEach(t => t.classList.remove('active'));
-      document.getElementById(view + '-view').classList.add('active');
+      // Force re-trigger animation by removing and re-adding
+      nextView.classList.remove('active');
+      void nextView.offsetWidth; // reflow
+      nextView.classList.add('active');
       if (btn) btn.classList.add('active');
       if (viewLoaded[view]) return;
       if (view === 'dashboard') loadDashboard();
@@ -634,6 +660,77 @@
           }).join('')}
         </div>
 
+        ${(() => {
+          // Build cumulative points trend from top-scores match data
+          const trendMatches = [...(topScoresData.matches || [])].reverse(); // chronological
+          if (trendMatches.length < 2) return '';
+          const teams = dash.teamRankings.map(t => t.team);
+          const cumulative = {};
+          for (const t of teams) cumulative[t] = [];
+          let running = {};
+          for (const t of teams) running[t] = 0;
+          for (const m of trendMatches) {
+            for (const t of teams) {
+              running[t] += (m.teamTotals && m.teamTotals[t]) || 0;
+              cumulative[t].push(running[t]);
+            }
+          }
+          const maxPts = Math.max(...teams.map(t => cumulative[t][cumulative[t].length - 1]));
+          const nMatches = trendMatches.length;
+          const W = 800, H = 300, padL = 50, padR = 20, padT = 20, padB = 40;
+          const chartW = W - padL - padR, chartH = H - padT - padB;
+
+          // Grid lines
+          const gridSteps = 4;
+          let gridLines = '';
+          for (let i = 0; i <= gridSteps; i++) {
+            const y = padT + (chartH / gridSteps) * i;
+            const val = Math.round(maxPts * (1 - i / gridSteps));
+            gridLines += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - padR) + '" y2="' + y + '" class="trend-grid-line"/>';
+            gridLines += '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" class="trend-axis-label" text-anchor="end">' + val + '</text>';
+          }
+
+          // X-axis labels
+          let xLabels = '';
+          for (let i = 0; i < nMatches; i++) {
+            const x = padL + (chartW / (nMatches - 1)) * i;
+            xLabels += '<text x="' + x + '" y="' + (H - 8) + '" class="trend-axis-label" text-anchor="middle">M' + (i + 1) + '</text>';
+          }
+
+          // Lines and dots per team
+          let lines = '';
+          let dots = '';
+          for (const t of teams) {
+            const color = getTeamColor(t);
+            const points = cumulative[t].map((v, i) => {
+              const x = padL + (chartW / (nMatches - 1)) * i;
+              const y = padT + chartH - (v / maxPts) * chartH;
+              return { x, y, v, matchTitle: trendMatches[i].title };
+            });
+            const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+            lines += '<path d="' + pathD + '" class="trend-line" stroke="' + color + '" data-team="' + t + '" style="stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: trendDraw 1.5s ease forwards 0.3s"/>';
+            for (const p of points) {
+              dots += '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="4" class="trend-dot" fill="' + color + '" stroke="var(--surface)" data-team="' + t + '" data-val="' + p.v + '" data-match="' + p.matchTitle.replace(/"/g, '&quot;') + '"/>';
+            }
+          }
+
+          // Legend
+          const legend = teams.map(t => {
+            const color = getTeamColor(t);
+            return '<span class="trend-legend-item" data-team="' + t + '" onclick="toggleTrendTeam(this)"><span class="trend-legend-dot" style="background:' + color + '"></span>' + t + '</span>';
+          }).join('');
+
+          return '<div class="section-title fade-up fade-up-1">📈 Points Trend <span class="section-deco"><span class="d1"></span><span class="d2"></span><span class="d3"></span></span></div>' +
+            '<div class="trend-card fade-up fade-up-2" style="position:relative">' +
+            '<svg class="trend-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' +
+            '<style>@keyframes trendDraw { to { stroke-dashoffset: 0; } }</style>' +
+            gridLines + xLabels + lines + dots +
+            '</svg>' +
+            '<div class="trend-legend">' + legend + '</div>' +
+            '<div class="trend-tooltip" id="trend-tooltip"></div>' +
+            '</div>';
+        })()}
+
         <div class="section-title fade-up fade-up-1">🌟 Top Performers <span class="section-deco"><span class="d1"></span><span class="d2"></span><span class="d3"></span></span></div>
         ${dash.topPlayers.length === 0 ? '<div class="empty-state" style="padding:20px">🏟️ No match data yet</div>' :
         `<div class="tp-layout fade-up fade-up-3">
@@ -663,6 +760,38 @@
         </div>`}
         `;
       viewLoaded['dashboard'] = true;
+
+      // Trend chart interactivity
+      document.querySelectorAll('.trend-dot').forEach(dot => {
+        dot.addEventListener('mouseenter', function(e) {
+          const tooltip = document.getElementById('trend-tooltip');
+          if (!tooltip) return;
+          tooltip.innerHTML = '<strong>' + this.dataset.team + '</strong><br>' + this.dataset.match + '<br>' + this.dataset.val + ' pts';
+          const rect = this.closest('.trend-card').getBoundingClientRect();
+          const cx = parseFloat(this.getAttribute('cx'));
+          const cy = parseFloat(this.getAttribute('cy'));
+          const svg = this.closest('svg');
+          const svgRect = svg.getBoundingClientRect();
+          const scaleX = svgRect.width / svg.viewBox.baseVal.width;
+          const scaleY = svgRect.height / svg.viewBox.baseVal.height;
+          tooltip.style.left = (cx * scaleX + svgRect.left - rect.left - 40) + 'px';
+          tooltip.style.top = (cy * scaleY + svgRect.top - rect.top - 60) + 'px';
+          tooltip.classList.add('visible');
+        });
+        dot.addEventListener('mouseleave', function() {
+          const tooltip = document.getElementById('trend-tooltip');
+          if (tooltip) tooltip.classList.remove('visible');
+        });
+      });
+    }
+
+    function toggleTrendTeam(el) {
+      const team = el.dataset.team;
+      el.classList.toggle('dimmed');
+      const dimmed = el.classList.contains('dimmed');
+      document.querySelectorAll('.trend-line[data-team="' + team + '"], .trend-dot[data-team="' + team + '"]').forEach(el => {
+        el.style.opacity = dimmed ? '0.08' : '1';
+      });
     }
 
 
