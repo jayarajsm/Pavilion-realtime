@@ -13,12 +13,31 @@
 
 <br/>
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/img/light-standings.PNG" width="200" alt="Standings - Light" />
+  <img src="docs/img/dark-standings.PNG" width="200" alt="Standings - Dark" />
+  <img src="docs/img/light-matches.PNG" width="200" alt="Matches - Light" />
+  <img src="docs/img/dark-matches.PNG" width="200" alt="Matches - Dark" />
+</p>
+
+<p align="center">
+  <img src="docs/img/light-matches-expand.PNG" width="200" alt="Match Details - Light" />
+  <img src="docs/img/dark-matches-expand.PNG" width="200" alt="Match Details - Dark" />
+  <img src="docs/img/light-owners.PNG" width="200" alt="Teams - Light" />
+  <img src="docs/img/dark-owners.PNG" width="200" alt="Teams - Dark" />
+</p>
+
+<br/>
+
 ---
 
 <br/>
 
 ## 📋 Table of Contents
 
+- [Screenshots](#screenshots)
 - [How It Works](#-how-it-works)
 - [Quick Start](#-quick-start)
 - [Setting Up Your League](#-setting-up-your-league)
