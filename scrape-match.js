@@ -28,8 +28,7 @@ const matchNum = args[1];
 const outFile = path.join(MATCHES_DIR, `match-${matchNum}.csv`);
 
 if (fs.existsSync(outFile)) {
-  console.log(`match-${matchNum}.csv already exists, skipping.`);
-  process.exit(0);
+  console.log(`match-${matchNum}.csv already exists, overwriting.`);
 }
 
 const allPlayers = JSON.parse(fs.readFileSync(PLAYERS_FILE, 'utf8'));
