@@ -1,123 +1,115 @@
-Royal Challengers Bengaluru  (20 ovs maximum)
+Sunrisers Hyderabad  (20 ovs maximum)
+Batting	 	R	B	M	4s	6s	SR
+Travis Head 
+c Salt b Duffy
+11	9	17	2	0	122.22
+Abhishek Sharma 
+c †Sharma b Duffy
+7	8	12	0	1	87.50
+Ishan Kishan (c)†
+c Salt b Abhinandan Singh
+80	38	73	8	5	210.52
+Nitish Kumar Reddy 
+c Abhinandan Singh b Duffy
+1	6	6	0	0	16.66
+Heinrich Klaasen 
+c Salt b Shepherd
+31	22	42	2	1	140.90
+Salil Arora 
+c Padikkal b Suyash Sharma
+9	6	6	0	1	150.00
+Aniket Verma 
+c Kohli b Shepherd
+43	18	29	3	4	238.88
+Harsh Dubey 
+c Padikkal b Shepherd
+3	3	5	0	0	100.00
+Harshal Patel 
+c Padikkal b Kumar
+0	2	4	0	0	0.00
+David Payne 
+not out	6	5	11	0	0	120.00
+Jaydev Unadkat 
+not out	4	3	4	0	0	133.33
+Extras	(lb 2, w 4)	6	
+Total	
+20 Ov (RR: 10.05)
+201/9	
+Did not bat
+Eshan Malinga 
+Fall of wickets
+DRS
+1-18 (Abhishek Sharma, 2.1 ov), 2-23 (Travis Head, 2.6 ov), 3-29 (Nitish Kumar Reddy, 4.2 ov), 4-126 (Heinrich Klaasen, 13.1 ov), 5-137 (Salil Arora, 14.3 ov), 6-155 (Ishan Kishan, 15.6 ov), 7-167 (Harsh Dubey, 16.6 ov), 8-174 (Harshal Patel, 17.5 ov), 9-192 (Aniket Verma, 18.6 ov)
+Bowling	O	M	R	W	ECON	0s	WD	NB
+Jacob Duffy
+4	0	22	
+3
+5.50	13	1	0
+Bhuvneshwar Kumar
+4	0	31	
+1
+7.75	9	2	0
+Abhinandan Singh
+3	0	38	
+1
+12.66	7	0	0
+Romario Shepherd
+4	0	54	
+3
+13.50	5	1	0
+Suyash Sharma
+3	0	28	
+1
+9.33	6	0	0
+Krunal Pandya
+2	0	26	0	13.00	1	0	0
+Royal Challengers Bengaluru  (T: 202 runs from 20 ovs)
 Batting	 	R	B	M	4s	6s	SR
 Phil Salt 
-c Iyer b Jamieson
-16	9	9	2	1	177.77
+c Klaasen b Unadkat
+8	7	6	2	0	114.28
 Virat Kohli 
-c & b Azmatullah Omarzai
-43	35	69	3	0	122.85
-Mayank Agarwal 
-c Arshdeep Singh b Chahal
-24	18	22	2	1	133.33
+not out	69	38	84	5	5	181.57
+Devdutt Padikkal 
+c Klaasen b Dubey
+61	26	36	7	4	234.61
 Rajat Patidar (c)
-lbw b Jamieson
-26	16	17	1	2	162.50
-Liam Livingstone 
-lbw b Jamieson
-25	15	35	0	2	166.66
+c Dubey b Payne
+31	12	19	2	3	258.33
 Jitesh Sharma †
-b Vyshak
-24	10	21	2	2	240.00
-Romario Shepherd 
-lbw b Arshdeep Singh
-17	9	14	1	1	188.88
-Krunal Pandya 
-c Iyer b Arshdeep Singh
-4	5	11	0	0	80.00
-Bhuvneshwar Kumar 
-c Arya b Arshdeep Singh
-1	2	4	0	0	50.00
-Yash Dayal 
-not out	1	1	2	0	0	100.00
-Extras	(w 9)	9	
+c Unadkat b Payne
+0	1	1	0	0	0.00
+Tim David 
+not out	16	10	18	1	1	160.00
+Extras	(b 8, lb 3, w 7)	18	
 Total	
-20 Ov
- (RR: 9.50)
-190/9	
+15.4 Ov (RR: 12.95)
+203/4	
 Did not bat
-Josh Hazlewood 
+Romario Shepherd, 
+Krunal Pandya, 
+Bhuvneshwar Kumar, 
+Abhinandan Singh, 
+Suyash Sharma 
 Fall of wickets
 DRS
-1-18 (Phil Salt, 1.4 ov), 2-56 (Mayank Agarwal, 6.2 ov), 3-96 (Rajat Patidar, 10.5 ov), 4-131 (Virat Kohli, 14.5 ov), 5-167 (Liam Livingstone, 16.5 ov), 6-171 (Jitesh Sharma, 17.4 ov), 7-188 (Romario Shepherd, 19.2 ov), 8-189 (Krunal Pandya, 19.4 ov), 9-190 (Bhuvneshwar Kumar, 19.6 ov)
+1-9 (Phil Salt, 1.1 ov), 2-110 (Devdutt Padikkal, 8.4 ov), 3-163 (Rajat Patidar, 12.2 ov), 4-163 (Jitesh Sharma, 12.3 ov)
 Bowling	O	M	R	W	ECON	0s	WD	NB
-Arshdeep Singh
-4	0	40	
-3
-10.00	8	2	0
-Kyle Jamieson
-4	0	48	
-3
-12.00	9	3	0
-Azmatullah Omarzai
-4	0	35	
+Nitish Kumar Reddy
+2	0	19	0	9.50	5	0	0
+Jaydev Unadkat
+3	0	29	
 1
-8.75	3	2	0
-Vijaykumar Vyshak
-4	0	30	
-1
-7.50	5	2	0
-Yuzvendra Chahal
-4	0	37	
-1
-9.25	3	0	0
-Punjab Kings  (T: 191 runs from 20 ovs)
-Batting	 	R	B	M	4s	6s	SR
-Priyansh Arya 
-c Salt b Hazlewood
-24	19	24	4	0	126.31
-Prabhsimran Singh 
-c Kumar b Pandya
-26	22	42	0	2	118.18
-Josh Inglis †
-c Livingstone b Pandya
-39	23	35	1	4	169.56
-Shreyas Iyer (c)
-c †Sharma b Shepherd
-1	2	5	0	0	50.00
-Nehal Wadhera 
-c Pandya b Kumar
-15	18	32	0	1	83.33
-Shashank Singh 
-not out	61	30	38	3	6	203.33
-Marcus Stoinis 
-c Yash Dayal b Kumar
-6	2	2	0	1	300.00
-Azmatullah Omarzai 
-c sub (MS Bhandage) b Yash Dayal
-1	2	4	0	0	50.00
-Kyle Jamieson 
-not out	0	2	10	0	0	0.00
-Extras	(lb 8, w 3)	11	
-Total	
-20 Ov
- (RR: 9.20)
-184/7	
-Did not bat
-Vijaykumar Vyshak, 
-Arshdeep Singh 
-Fall of wickets
-DRS
-1-43 (Priyansh Arya, 4.6 ov), 2-72 (Prabhsimran Singh, 8.3 ov), 3-79 (Shreyas Iyer, 9.4 ov), 4-98 (Josh Inglis, 12.1 ov), 5-136 (Nehal Wadhera, 16.2 ov), 6-142 (Marcus Stoinis, 16.4 ov), 7-145 (Azmatullah Omarzai, 17.2 ov)
-Bowling	O	M	R	W	ECON	0s	WD	NB
-Bhuvneshwar Kumar
-4	0	38	
+9.66	6	1	0
+David Payne
+3	0	35	
 2
-9.50	9	0	0
-Yash Dayal
-3	0	18	
+11.66	5	1	0
+Harsh Dubey
+3	0	35	
 1
-6.00	10	0	0
-Josh Hazlewood
-4	0	54	
-1
-13.50	7	2	0
-Krunal Pandya
-4	0	17	
-2
-4.25	12	0	0
-Suyash Sharma
-2	0	19	0	9.50	4	0	0
-Romario Shepherd
-3	0	30	
-1
-10.00	5	1	0
+11.66	4	0	0
+Eshan Malinga
+2	0	35	0	17.50	3	4	0
+Harshal Patel
+2.4	0	39	0	14.62	3	1	0
