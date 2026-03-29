@@ -409,13 +409,38 @@ function parseDismissal(dismissal, batsmanName) {
 parseInnings();
 parseInnings();
 
+// ========== Determine IPL teams from scorecard headers ==========
+const TEAM_NAME_MAP = {
+  'chennai super kings': 'CSK',
+  'delhi capitals': 'DC',
+  'gujarat titans': 'GT',
+  'kolkata knight riders': 'KKR',
+  'lucknow super giants': 'LSG',
+  'mumbai indians': 'MI',
+  'punjab kings': 'PBKS',
+  'royal challengers bengaluru': 'RCB',
+  'royal challengers bangalore': 'RCB',
+  'rajasthan royals': 'RR',
+  'sunrisers hyderabad': 'SRH',
+};
+
+function teamAbbr(fullName) {
+  const lower = fullName.toLowerCase().trim();
+  for (const [key, abbr] of Object.entries(TEAM_NAME_MAP)) {
+    if (lower.includes(key) || key.includes(lower)) return abbr;
+  }
+  return fullName; // fallback
+}
+
 // ========== Match players to fantasy roster ==========
 const matchedPlayers = {}; // fantasyPlayerId -> stats
 const unmatched = [];
 
+const iplTeamAbbrs = new Set(teams.map(t => teamAbbr(t)));
+
 for (const [scorecardName, stats] of Object.entries(playerStats)) {
   const player = matchPlayer(scorecardName);
-  if (player) {
+  if (player && iplTeamAbbrs.has(player.iplTeam)) {
     if (matchedPlayers[player.id]) {
       // Merge stats (shouldn't happen but just in case)
       const existing = matchedPlayers[player.id];
@@ -684,29 +709,6 @@ async function selectMoM() {
   } else {
     console.log(`\n  No Man of the Match selected.\n`);
   }
-}
-
-// ========== Determine IPL teams from scorecard headers ==========
-const TEAM_NAME_MAP = {
-  'chennai super kings': 'CSK',
-  'delhi capitals': 'DC',
-  'gujarat titans': 'GT',
-  'kolkata knight riders': 'KKR',
-  'lucknow super giants': 'LSG',
-  'mumbai indians': 'MI',
-  'punjab kings': 'PBKS',
-  'royal challengers bengaluru': 'RCB',
-  'royal challengers bangalore': 'RCB',
-  'rajasthan royals': 'RR',
-  'sunrisers hyderabad': 'SRH',
-};
-
-function teamAbbr(fullName) {
-  const lower = fullName.toLowerCase().trim();
-  for (const [key, abbr] of Object.entries(TEAM_NAME_MAP)) {
-    if (lower.includes(key) || key.includes(lower)) return abbr;
-  }
-  return fullName; // fallback
 }
 
 const iplTeamList = teams.map(t => teamAbbr(t));
